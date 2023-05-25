@@ -80,8 +80,58 @@ class CustomerService {
 }
 ```
 
-With this approach, whether you try to create a Customer from a REST API call or from a CLI, 
-all the business logic is centralized in Application Core. 
+With this approach, whether you try to create a Customer from a REST API call or from a CLI,
+all the business logic is centralized in Application Core.
+
+**DON'T DO THIS**
+
+```java
+@Component
+class OrderProcessingJob {
+    private final OrderService orderService;
+    
+    @Scheduled(cron="0 * * * * *")
+    void run() {
+       List<Order> orders = orderService.findPendingOrders();
+       for(Order order : orders) {
+           this.processOrder(order);
+       }
+    }
+    
+    private void processOrder(Order order) {
+       ...
+       ...
+    }
+}
+```
+
+**INSTEAD, DO THIS**
+
+```java
+@Component
+class OrderProcessingJob {
+   private final OrderService orderService;
+
+   @Scheduled(cron="0 * * * * *")
+   void run() {
+      List<Order> orders = orderService.findPendingOrders();
+      this.processOrders(orders);
+   }
+}
+
+@Service
+@Transactional
+class OrderService {
+
+   public void processOrders(List<Order> orders) {
+       ...
+       ...
+   }
+}
+```
+
+With this approach, you can decouple order processing logic from scheduler 
+and can test independently without triggering through Scheduler.
 
 ### 4. Don't let the "External Service Integrations" influence the "Application Core" too much
 From the Application Core we may talk to database, message brokers or 3rd party web services, etc.
@@ -187,7 +237,7 @@ class CartService {
 Don't create interfaces with the hope that someday we might add another implementation for this interface.
 If that day ever comes, then with the powerful IDEs we have now it is just a matter of extracting the interface in a couple of keystrokes.
 
-If the reason for creating interface is for testing with Mock implementation, 
+If the reason for creating an interface is for testing with Mock implementation, 
 we have mocking libraries like Mockito which is capable of mocking classes without implementing interfaces.
 
 So, unless there is a good reason, don't create interfaces.
@@ -199,6 +249,25 @@ So, when you choose a library/framework to build your application faster, then y
 Instead of leveraging the power and flexibility offered by the selected framework, 
 creating an indirection or abstraction on top of the selected framework with the hope 
 that someday you might switch the framework to a different one is usually a very bad idea.
+
+For example, Spring Framework provides declarative support for handling database transactions, caching, method-level security etc.
+Introducing our own similar annotations and re-implementing the same features support 
+by delegating the actual handling to the framework is unnecessary.
+
+Instead, it's better to either directly use the framework's annotations or compose the annotation with additional semantics if needed.
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Transactional
+public @interface UseCase {
+   @AliasFor(
+        annotation = Transactional.class
+   )
+   Propagation propagation() default Propagation.REQUIRED;
+}
+```
 
 ### 8. Test not only units, but whole features
 
