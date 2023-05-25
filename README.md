@@ -1,5 +1,6 @@
-# Tomato Architecture
-Tomato Architecture is an approach to software architecture following **Common Sense Manifesto**
+![tomato-architecture-logo.png](assets/tomato-arc-logo.png)
+
+**Tomato Architecture** is an approach to software architecture following **Common Sense Manifesto**
 
 ## Common Sense Manifesto
 * Think what is best for your software over blindly following suggestions by popular people.
@@ -209,9 +210,9 @@ We should verify the whole feature is working or not by testing with the actual 
 That gives us more confidence.
 
 I wonder this whole idea of "We should have core domain completely independent of external dependencies" philosophy
-comes from the time when testing with real dependencies is very challenging or not possible at all.
+came from the time when testing with real dependencies is very challenging or not possible at all.
 
-Luckily, we have better technology now (ex: Testcontainers) to test with real dependencies.
+Luckily, we have better technology now (ex: [Testcontainers](https://testcontainers.com/)) to test with real dependencies.
 Testing with real dependencies might take slightly more time, but compared to the benefits, that's a negligible cost.
 
 ## FAQs
