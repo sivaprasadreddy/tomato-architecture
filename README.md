@@ -115,7 +115,7 @@ class OrderProcessingJob {
    @Scheduled(cron="0 * * * * *")
    void run() {
       List<Order> orders = orderService.findPendingOrders();
-       orderService.processOrders(orders);
+      orderService.processOrders(orders);
    }
 }
 
