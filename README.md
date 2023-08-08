@@ -2,6 +2,8 @@
 
 **Tomato Architecture** is an approach to software architecture following **Common Sense Manifesto**
 
+**Read Blog Post:** [Tomato Architecture - A Pragmatic Approach to Software Design](https://www.sivalabs.in/tomato-architecture-pragmatic-approach-to-software-design/)
+
 ## Common Sense Manifesto
 * Think what is best for your software over blindly following suggestions by popular people.
 * Strive to keep things simple instead of over-engineering the solution by guessing the requirements for the next decade.
