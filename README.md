@@ -2,6 +2,8 @@
 
 **Tomato Architecture** is an approach to software architecture following **Common Sense Manifesto**
 
+**NOTE:** Tomato Architecture documentation moved to https://tomato-architecture.github.io/
+
 **Read Blog Post:** [Tomato Architecture - A Pragmatic Approach to Software Design](https://www.sivalabs.in/tomato-architecture-pragmatic-approach-to-software-design/)
 
 ## Common Sense Manifesto
